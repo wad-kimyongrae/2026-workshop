@@ -234,6 +234,15 @@ h1 { position: relative; }
 .stop.now h3::after { background: var(--coral); }
 .stop.now::after { background: var(--coral); box-shadow: 0 0 0 3px var(--coral); }
 .stop.now time { color: var(--coral); }
+/* 머리글 그림: 해는 천천히 돌고 떠오르며, 물결은 옆으로 흐른다 */
+.hero-art .sun { animation: sun-bob 6s ease-in-out infinite; }
+.hero-art .rays { transform-box: fill-box; transform-origin: center; animation: sun-spin 24s linear infinite; }
+.hero-art .wave { animation: wave-flow 5s linear infinite; }
+.hero-art .w2 { animation-duration: 7s; animation-direction: reverse; }
+@keyframes sun-bob { 0%, 100% { transform: translate3d(0, 0, 0); } 50% { transform: translate3d(0, -4px, 0); } }
+@keyframes sun-spin { to { transform: rotate(360deg); } }
+@keyframes wave-flow { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(60px, 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .hero-art .sun, .hero-art .rays, .hero-art .wave { animation: none; } }
 </style>
 </head><body>
 
@@ -243,10 +252,8 @@ h1 { position: relative; }
 <div class="wrap">
   <header>
     <svg class="hero-art" viewBox="0 0 180 120" aria-hidden="true">
-      <circle cx="132" cy="40" r="24" fill="#ffc83d"/>
-      <g stroke="#ffc83d" stroke-width="4" stroke-linecap="round"><path d="M132 4v8M132 68v8M96 40h8M160 40h8M107 15l6 6M151 59l6 6M107 65l6-6M151 21l6-6"/></g>
-      <g class="waves"><path d="M0 92c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8 15-8 30-8 15 8 30 8" fill="none" stroke="#1a86c8" stroke-width="4" stroke-linecap="round"/>
-      <path d="M10 108c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8 15-8 30-8" fill="none" stroke="#7cc4ec" stroke-width="4" stroke-linecap="round"/></g>
+      <g class="sun"><g class="rays" stroke="#ffc83d" stroke-width="4" stroke-linecap="round"><path d="M132 4v8M132 68v8M96 40h8M160 40h8M107 15l6 6M151 59l6 6M107 65l6-6M151 21l6-6"/></g><circle cx="132" cy="40" r="24" fill="#ffc83d"/></g>
+      <g class="waves"><path class="wave w1" d="M-60 92c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8" fill="none" stroke="#1a86c8" stroke-width="4" stroke-linecap="round"/><path class="wave w2" d="M-110 108c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8" fill="none" stroke="#7cc4ec" stroke-width="4" stroke-linecap="round"/></g>
     </svg>
     <div class="eyebrow">캐테그로스 · 10월 1일(목) – 2일(금) · 1박 2일</div>
     <h1>잠실 <span class="river">한강</span>에서 만나요</h1>
