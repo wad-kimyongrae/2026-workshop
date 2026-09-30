@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>캐테그로스 워크샵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: 강변 산책로처럼 세로로 흐르는 시간축. 넓은 화면에서는 1일차(길다)와 2일차(짧다)를 나란히, 좁으면 한 줄 */
+:root {
+  --bg: #f4faff;
+  --surface: #ffffff;
+  --fg: #1c2b36;
+  --muted: #5d6f7c;
+  --line: #d6e7f2;
+  --river: #1a86c8;
+  --grass: #239457;
+  --sun: #e89a00;
+  --river-soft: #e0f1fc;
+  --grass-soft: #e1f5e9;
+  --sky: #d7eefc;
+  --coral: #ff7a59;
+  --sun-soft: #fff3d6;
+  color-scheme: light;
+  --font-display: "Do Hyeon", "IBM Plex Sans KR", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 36px; }
+a { color: var(--river); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; border-radius: 3px; }
+
+header { display: grid; gap: 10px; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; color: var(--grass); font-weight: 600; }
+h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, 7vw, 60px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 .river { color: var(--river); }
+.lede { color: var(--muted); max-width: 60ch; margin: 0; }
+
+.keyfacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 2px; min-width: 0; }
+.fact .k { font-size: 12px; color: var(--muted); letter-spacing: .04em; }
+.fact .v { font-weight: 600; font-size: 16px; }
+.fact .s { font-size: 13px; color: var(--muted); }
+
+.days { display: grid; grid-template-columns: 1.6fr 1fr; gap: 28px; align-items: start; }
+@media (max-width: 760px) { .days { grid-template-columns: 1fr; } }
+.day { min-width: 0; display: grid; gap: 14px; }
+.day-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid var(--fg); padding-bottom: 8px; }
+.day-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; margin: 0; }
+.day-head span { color: var(--muted); font-size: 14px; }
+
+ol.timeline { --tcol: 48px; --rail: 48px; --dot: 12px; --lh: 24px; --py: 12px; list-style: none; margin: 0; padding: 0; position: relative; }
+ol.timeline::before { content: ""; position: absolute; left: calc(var(--tcol) + var(--rail) / 2 - 1px); top: calc(var(--py) + var(--lh) / 2); bottom: calc(var(--py) + var(--lh) / 2); width: 2px; background: var(--line); }
+.stop { display: grid; grid-template-columns: var(--tcol) var(--rail) minmax(0, 1fr); padding-block: var(--py); position: relative; }
+.stop time { grid-column: 1; font-family: var(--font-mono); font-size: 13px; line-height: var(--lh); color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.stop::after { content: ""; position: absolute; left: calc(var(--tcol) + var(--rail) / 2); top: calc(var(--py) + var(--lh) / 2); width: var(--dot); height: var(--dot); box-sizing: border-box; border-radius: 50%; background: var(--bg); border: 2px solid var(--muted); transform: translate3d(-50%, -50%, 0); }
+.stop.key::after { background: var(--river); border-color: var(--river); }
+.stop.meal::after { background: var(--sun); border-color: var(--sun); }
+.stop.play::after { background: var(--grass); border-color: var(--grass); }
+.stop .body { grid-column: 3; }
+.body { min-width: 0; display: grid; gap: 4px; }
+.body h3 { margin: 0; font-size: 16px; font-weight: 600; line-height: 24px; }
+.body p { margin: 0; color: var(--muted); font-size: 14px; }
+.body ul { margin: 2px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.tag { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 1px 7px; border-radius: 999px; margin-left: 6px; vertical-align: 2px; }
+.tag.meet { background: var(--river-soft); color: var(--river); }
+.tag.free { background: var(--grass-soft); color: var(--grass); }
+.links { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; }
+.links a::after { content: " ↗"; font-size: 12px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+.prep { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px; display: grid; gap: 12px; }
+.prep h2 { font-family: var(--font-display); font-weight: 400; font-size: 24px; margin: 0; }
+.checks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 8px 20px; }
+.checks label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.checks input { margin-top: 5px; accent-color: var(--grass); width: 16px; height: 16px; flex: none; }
+.checks input:checked + span { color: var(--muted); text-decoration: line-through; }
+.note { font-size: 13px; color: var(--muted); margin: 0; }
+
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+.nav div { max-width: 1040px; margin: 0 auto; padding-inline: 20px; padding-block: 10px; display: flex; gap: 6px; overflow-x: auto; }
+.nav a { flex: none; text-decoration: none; color: var(--fg); font-size: 14px; font-weight: 500; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+.nav a:hover { border-color: var(--river); color: var(--river); }
+section[id], .day { scroll-margin-top: 64px; }
+
+.rooms { display: grid; gap: 16px; }
+.rooms-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; border-bottom: 2px solid var(--fg); padding-bottom: 8px; }
+.rooms-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; margin: 0; }
+.find { display: flex; align-items: center; gap: 8px; }
+.find label { font-size: 13px; color: var(--muted); }
+.find input { font: inherit; font-size: 15px; width: 140px; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+.find input:focus-visible { outline: 2px solid var(--river); outline-offset: 1px; }
+.find-result { font-size: 14px; color: var(--muted); min-height: 1.6em; margin: 0; }
+.find-result strong { color: var(--river); }
+.groups { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 760px) { .groups { grid-template-columns: 1fr; } }
+.group { min-width: 0; display: grid; gap: 10px; }
+.group h3 { margin: 0; font-size: 14px; color: var(--muted); font-weight: 600; letter-spacing: .04em; }
+.room-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.room { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 6px; transition: border-color .15s, background .15s; }
+.room .no { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.room .no b { font-family: var(--font-display); font-weight: 400; font-size: 26px; color: var(--river); margin-right: 4px; vertical-align: -3px; }
+.room ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.room li { font-size: 15px; font-weight: 500; padding: 2px 10px; border-radius: 999px; background: var(--river-soft); }
+.room li.hit { background: var(--river); color: var(--surface); }
+.room.hit { border-color: var(--river); }
+.room .solo { font-size: 12px; color: var(--muted); }
+@media (max-width: 420px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 28px; }
+  .nav div { padding-inline: 16px; }
+  .keyfacts { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .fact { padding: 12px; }
+  .fact .v { font-size: 15px; }
+  ol.timeline { --tcol: 44px; --rail: 40px; }
+  .find { width: 100%; }
+  .find input { flex: 1; width: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .room { transition: none; } html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; }
+.day-head .date { font-family: var(--font-mono); font-size: 13px; color: var(--fg); background: var(--river-soft); padding: 1px 8px; border-radius: 6px; }
+.weather { display: grid; gap: 14px; }
+.weather-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; border-bottom: 2px solid var(--fg); padding-bottom: 8px; }
+.weather-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; margin: 0; }
+.weather-head span { font-size: 13px; color: var(--muted); }
+.wx-days { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .wx-days { grid-template-columns: 1fr; } }
+.wx { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: center; min-width: 0; }
+.wx svg { grid-row: span 3; width: 52px; height: 52px; }
+.wx .d { font-size: 13px; color: var(--muted); }
+.wx .t { font-family: var(--font-display); font-size: 30px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.wx .t small { font-family: var(--font-body); font-size: 14px; color: var(--muted); margin-left: 6px; }
+.wx .m { font-size: 13px; color: var(--muted); }
+.hourly-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.hourly { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(64px, 1fr); min-width: 640px; }
+.hr { display: grid; justify-items: center; gap: 2px; padding: 10px 4px 12px; border-right: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.hr:last-child { border-right: 0; }
+.hr .h { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.hr .e { font-size: 11px; color: var(--grass); font-weight: 600; min-height: 1.4em; text-align: center; }
+.hr .c { font-size: 16px; font-weight: 600; }
+.hr .w { font-size: 11px; color: var(--muted); }
+.hr.now { background: var(--river-soft); }
+.bar { width: 6px; border-radius: 3px; background: var(--sun); align-self: end; }
+.wx-tip { margin: 0; font-size: 14px; color: var(--fg); background: var(--grass-soft); border-radius: 10px; padding: 12px 14px; }
+.wx-src { margin: 0; font-size: 12px; color: var(--muted); }
+.room .rtype { font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; justify-self: start; }
+.room .rtype::after { content: " ↗"; }
+.room.best { border-color: var(--sun); background: linear-gradient(0deg, var(--surface), var(--surface)); box-shadow: inset 0 0 0 1px var(--sun); }
+.room.best .rtype, .room.best .solo { color: var(--sun); font-weight: 600; }
+.rtypes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .rtypes { grid-template-columns: 1fr; } }
+.rt { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 6px; min-width: 0; }
+.rt.best { border-color: var(--sun); }
+.rt h3 { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 17px; }
+.rt h3 a { color: var(--fg); text-decoration: none; }
+.rt h3 a::after { content: " ↗"; font-size: 12px; color: var(--muted); }
+.rt h3 span { font-size: 12px; color: var(--muted); font-weight: 500; }
+.rt.best h3 span { color: var(--sun); font-weight: 600; }
+.rt ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+.rt p { margin: 0; font-size: 13px; color: var(--fg); }
+.now-pill { margin: 0; justify-self: start; display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px; background: var(--river); color: var(--surface); font-weight: 600; font-size: 14px; text-decoration: none; }
+.now-pill a { color: inherit; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--surface); animation: pulse 1.6s ease-out infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--surface) 70%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+.stop.now::before { content: ""; position: absolute; inset: 2px -10px; border-radius: 12px; background: var(--river-soft); z-index: -1; }
+ol.timeline { isolation: isolate; }
+.stop.now::after { width: calc(var(--dot) + 6px); height: calc(var(--dot) + 6px); background: var(--river); border-color: var(--surface); box-shadow: 0 0 0 3px var(--river); animation: pulse-dot 1.6s ease-out infinite; }
+@keyframes pulse-dot { 0% { box-shadow: 0 0 0 3px var(--river), 0 0 0 3px color-mix(in srgb, var(--river) 50%, transparent); } 100% { box-shadow: 0 0 0 3px var(--river), 0 0 0 12px transparent; } }
+.stop.now time { color: var(--river); font-weight: 600; }
+.stop.now h3::after { content: "지금"; display: inline-block; margin-left: 8px; font-size: 11px; font-weight: 600; letter-spacing: .04em; padding: 1px 8px; border-radius: 999px; background: var(--river); color: var(--surface); vertical-align: 2px; }
+.stop.past { opacity: .55; }
+.hr.now { background: var(--river-soft); box-shadow: inset 0 -3px 0 var(--river); }
+.hr.now .h { color: var(--river); font-weight: 600; }
+@media (prefers-reduced-motion: reduce) { .pulse, .stop.now::after { animation: none; } }
+.outfit { display: grid; gap: 10px; }
+.outfit h3 { margin: 0; font-size: 17px; }
+.outfit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 760px) { .outfit-grid { grid-template-columns: 1fr; } }
+.of { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; min-width: 0; }
+.of-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.of-when { font-size: 13px; color: var(--muted); font-weight: 600; }
+.of-temp { font-family: var(--font-display); font-size: 22px; color: var(--sun); font-variant-numeric: tabular-nums; }
+.of p { margin: 0; font-size: 14px; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips li { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--grass-soft); color: var(--fg); }
+/* 스크롤바: 강물색 손잡이, 투명한 홈 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--river) 45%, transparent); border-radius: 999px; border: 3px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--river); }
+::-webkit-scrollbar-corner { background: transparent; }
+.hourly-wrap::-webkit-scrollbar { height: 8px; }
+.hourly-wrap::-webkit-scrollbar-thumb { border-color: var(--surface); }
+.nav div::-webkit-scrollbar { display: none; }
+@supports not selector(::-webkit-scrollbar) {
+  html { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--river) 45%, transparent) transparent; }
+  .hourly-wrap { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--river) 45%, transparent) transparent; }
+}
+.nav div { scrollbar-width: none; }
+.hourly-wrap { scroll-snap-type: x proximity; overscroll-behavior-x: contain; }
+.hr { scroll-snap-align: start; }
+.wx-wear { margin: 0; font-size: 14px; }
+.wx-wear b { color: var(--grass); margin-right: 8px; }
+/* 시간별 칸: 너비·행 높이 고정 */
+.hourly { grid-auto-columns: minmax(76px, 1fr); min-width: 0; width: max-content; min-width: 100%; }
+.hr { grid-template-rows: 18px 18px 24px 16px; align-items: stretch; justify-items: center; gap: 4px; padding: 12px 6px; height: 100%; box-sizing: border-box; }
+.hr > span { display: block; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: inherit; }
+.hr .h { line-height: 18px; }
+.hr .e { line-height: 18px; min-height: 0; }
+.hr .c { line-height: 24px; }
+.hr .w { line-height: 16px; }
+/* 밝은 한강 낮 분위기 */
+body { background: linear-gradient(180deg, var(--sky) 0, var(--bg) 420px) no-repeat, var(--bg); }
+.nav { background: color-mix(in srgb, var(--sky) 85%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom-color: transparent; }
+header { position: relative; }
+.hero-art { position: absolute; right: 0; top: -8px; width: 180px; height: 120px; pointer-events: none; }
+@media (max-width: 640px) { .hero-art { width: 96px; height: 64px; top: -30px; right: -8px; } .hero-art .waves { display: none; } }
+[hidden] { display: none !important; }
+.eyebrow { color: var(--coral); }
+h1 { position: relative; }
+.fact { box-shadow: 0 1px 0 var(--line), 0 6px 18px -12px color-mix(in srgb, var(--river) 40%, transparent); border-color: transparent; }
+.fact:nth-child(1) { background: var(--river-soft); }
+.fact:nth-child(2) { background: var(--sun-soft); }
+.fact:nth-child(3) { background: var(--grass-soft); }
+.fact:nth-child(4) { background: #ffe9e2; }
+.now-pill { background: var(--coral); }
+.room.best, .rt.best { background: var(--sun-soft); }
+.wx-tip { background: var(--sun-soft); }
+.stop.now::before { background: var(--sun-soft); }
+.stop.now h3::after { background: var(--coral); }
+.stop.now::after { background: var(--coral); box-shadow: 0 0 0 3px var(--coral); }
+.stop.now time { color: var(--coral); }
+</style>
+</head><body><div id="__backbar" style="display:none;position:sticky;top:0;z-index:99;background:#2f6feb;padding:8px 14px;font:600 13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif"><a id="__backlink" href="../../../../../work-viewer.html#catchtable-growth-workshop%3A%3Adocs%2Fworkshop-guide.html" data-srv="http://localhost:7420/work-viewer.html#catchtable-growth-workshop%3A%3Adocs%2Fworkshop-guide.html" style="color:#fff;text-decoration:none">← 작업 문서 뷰어로 돌아가기</a></div><script>if(window.self===window.top){var _b=document.getElementById("__backbar");if(_b)_b.style.display="block";}var _a=document.getElementById("__backlink");if(_a&&location.protocol==="file:")_a.href=_a.getAttribute("data-srv");</script>
+
+<nav class="nav" aria-label="바로가기"><div>
+  <a href="#d1">1일차</a><a href="#d2">2일차</a><a href="#weather">날씨</a><a href="#rooms">방 배정</a><a href="#prep">준비물</a>
+</div></nav>
+<div class="wrap">
+  <header>
+    <svg class="hero-art" viewBox="0 0 180 120" aria-hidden="true">
+      <circle cx="132" cy="40" r="24" fill="#ffc83d"/>
+      <g stroke="#ffc83d" stroke-width="4" stroke-linecap="round"><path d="M132 4v8M132 68v8M96 40h8M160 40h8M107 15l6 6M151 59l6 6M107 65l6-6M151 21l6-6"/></g>
+      <g class="waves"><path d="M0 92c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8 15-8 30-8 15 8 30 8" fill="none" stroke="#1a86c8" stroke-width="4" stroke-linecap="round"/>
+      <path d="M10 108c15 0 15-8 30-8s15 8 30 8 15-8 30-8 15 8 30 8 15-8 30-8" fill="none" stroke="#7cc4ec" stroke-width="4" stroke-linecap="round"/></g>
+    </svg>
+    <div class="eyebrow">캐테그로스 · 10월 1일(목) – 2일(금) · 1박 2일</div>
+    <h1>잠실 <span class="river">한강</span>에서 만나요</h1>
+    <p class="now-pill" id="now-pill" hidden><span class="pulse" aria-hidden="true"></span><span id="now-text"></span></p>
+    <p class="lede">한강 피크닉으로 시작해 아쿠아리움, 저녁, 볼링까지 이어지는 일정입니다. 1일차 11:30까지 잠실한강공원으로 각자 와 주세요.</p>
+  </header>
+
+  <section class="keyfacts" aria-label="핵심 정보">
+    <div class="fact"><span class="k">집합</span><span class="v">10/1(목) 11:30</span><span class="s">잠실한강공원 · <a href="https://naver.me/58N6MBRS" target="_blank" rel="noopener">지도</a></span></div>
+    <div class="fact"><span class="k">저녁</span><span class="v">18:00 마키노차야 블랙31</span><span class="s">이어서 19:00 볼링</span></div>
+    <div class="fact"><span class="k">숙소</span><span class="v">stay509</span><span class="s">디럭스 7실 · 👑 더블킹 씨네마 1실 · 체크인 18:00</span></div>
+    <div class="fact"><span class="k">마무리</span><span class="v">10/2(금) 13:00</span><span class="s">워크샵 회고 후 해산</span></div>
+  </section>
+
+  <div class="legend" aria-hidden="true">
+    <span><i style="background:var(--river)"></i>집합·이동</span>
+    <span><i style="background:var(--sun)"></i>식사</span>
+    <span><i style="background:var(--grass)"></i>활동</span>
+  </div>
+
+  <div class="days">
+    <section class="day" aria-labelledby="d1" data-date="2026-10-01" data-end="24:00">
+      <div class="day-head"><h2 id="d1">1일차</h2><span class="date">10/1 목</span><span>잠실한강공원 → 롯데월드타워 → 숙소</span></div>
+      <ol class="timeline">
+        <li class="stop"><time>10:00</time><div class="body"><h3>워크샵 장소로 개별 이동</h3></div></li>
+        <li class="stop key"><time>11:30</time><div class="body">
+          <h3>잠실한강공원 집합 <span class="tag meet">집합</span></h3>
+          <p>피크닉을 준비합니다.</p>
+          <ul>
+            <li>점심은 배달 (메뉴는 미리 취합)</li>
+            <li>피크닉 간식 픽업 (예: 픽베이크, 한정선)</li>
+            <li>돗자리는 현장에서 렌트합니다 (따로 챙기지 않아도 됩니다)</li>
+          </ul>
+          <div class="links"><a href="https://naver.me/58N6MBRS" target="_blank" rel="noopener">잠실한강공원 위치</a></div>
+        </div></li>
+        <li class="stop meal"><time>12:00</time><div class="body"><h3>한강공원에서 점심 식사</h3></div></li>
+        <li class="stop play"><time>13:00</time><div class="body">
+          <h3>팀 프로그램 (업무 공유) · 피크닉</h3>
+          <p>자전거, 러닝, 독서, 카페 등 자유롭게 골라서</p>
+        </div></li>
+        <li class="stop play"><time>14:00</time><div class="body"><h3>자유시간 <span class="tag free">자유</span></h3></div></li>
+        <li class="stop key"><time>15:00</time><div class="body">
+          <h3>택시로 롯데월드타워 이동</h3>
+          <p>15:30 도착 예정</p>
+        </div></li>
+        <li class="stop play"><time>16:00</time><div class="body"><h3>아쿠아리움 관람</h3></div></li>
+        <li class="stop key"><time>17:20</time><div class="body"><h3>저녁 식사 장소로 이동</h3></div></li>
+        <li class="stop meal"><time>18:00</time><div class="body">
+          <h3>마키노차야 블랙31에서 저녁 식사</h3>
+          <div class="links"><a href="https://naver.me/5BcjxE1B" target="_blank" rel="noopener">마키노차야 블랙31 위치</a></div>
+        </div></li>
+        <li class="stop play"><time>19:00</time><div class="body">
+          <h3>볼링</h3>
+          <div class="links"><a href="https://naver.me/57VZwKje" target="_blank" rel="noopener">볼링장 위치</a></div>
+        </div></li>
+        <li class="stop key"><time>20:00</time><div class="body">
+          <h3>숙소 stay509로 이동</h3>
+          <p>디럭스 7실, 👑 더블킹 씨네마 1실 · 송파구 오금로11길 63-11</p>
+          <div class="links">
+            <a href="http://www.stay509.com/" target="_blank" rel="noopener">stay509</a>
+            <a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스 객실</a>
+            <a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a>
+          </div>
+        </div></li>
+        <li class="stop"><time>21:00</time><div class="body"><h3>휴식</h3></div></li>
+      </ol>
+    </section>
+
+    <section class="day" aria-labelledby="d2" data-date="2026-10-02" data-end="14:00">
+      <div class="day-head"><h2 id="d2">2일차</h2><span class="date">10/2 금</span><span>숙소 → 해산</span></div>
+      <ol class="timeline">
+        <li class="stop"><time>10:00</time><div class="body"><h3>기상</h3></div></li>
+        <li class="stop meal"><time>11:00</time><div class="body"><h3>브런치 식사</h3><p>숙소 체크아웃은 12:00까지</p></div></li>
+        <li class="stop meal"><time>12:00</time><div class="body"><h3>카페</h3></div></li>
+        <li class="stop key"><time>13:00</time><div class="body"><h3>워크샵 회고 후 마무리</h3></div></li>
+      </ol>
+    </section>
+  </div>
+
+  <section class="weather" id="weather" aria-labelledby="wx-title">
+    <div class="weather-head"><h2 id="wx-title">날씨</h2><span>네이버 날씨 · 서울 송파구 잠실동 · 9월 30일 발표</span></div>
+    <div class="wx-days">
+      <div class="wx"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="10" fill="var(--sun)"/><g stroke="var(--sun)" stroke-width="3" stroke-linecap="round"><path d="M26 5v6M26 41v6M5 26h6M41 26h6M11 11l4 4M37 37l4 4M11 41l4-4M37 15l4-4"/></g></svg><span class="d">10/1 목 · 1일차</span><span class="t">12° / 20°<small>종일 맑음</small></span><span class="m">강수확률 오전 0% · 오후 0% · 자외선 높음</span></div>
+      <div class="wx"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="10" fill="var(--sun)"/><g stroke="var(--sun)" stroke-width="3" stroke-linecap="round"><path d="M26 5v6M26 41v6M5 26h6M41 26h6M11 11l4 4M37 37l4 4M11 41l4-4M37 15l4-4"/></g></svg><span class="d">10/2 금 · 2일차</span><span class="t">10° / 22°<small>종일 맑음</small></span><span class="m">강수확률 오전 0% · 오후 0%</span></div>
+    </div>
+    <div class="hourly-wrap" role="region" aria-label="1일차 시간별 기온" tabindex="0"><div class="hourly"><div class="hr"><span class="h">11시</span><span class="e">집합</span><span class="c">20°</span><span class="w">북서 3.1m/s</span></div><div class="hr"><span class="h">12시</span><span class="e">점심</span><span class="c">21°</span><span class="w">북서 3.6m/s</span></div><div class="hr"><span class="h">13시</span><span class="e">팀 활동</span><span class="c">22°</span><span class="w">북서 3.6m/s</span></div><div class="hr"><span class="h">14시</span><span class="e">자유</span><span class="c">22°</span><span class="w">북서 3.8m/s</span></div><div class="hr"><span class="h">15시</span><span class="e">이동</span><span class="c">22°</span><span class="w">서 3.5m/s</span></div><div class="hr"><span class="h">16시</span><span class="e">아쿠아</span><span class="c">22°</span><span class="w">서 3.1m/s</span></div><div class="hr"><span class="h">17시</span><span class="e"></span><span class="c">21°</span><span class="w">서 2.4m/s</span></div><div class="hr"><span class="h">18시</span><span class="e">저녁</span><span class="c">20°</span><span class="w">서 1.7m/s</span></div><div class="hr"><span class="h">19시</span><span class="e">볼링</span><span class="c">18°</span><span class="w">서 1.4m/s</span></div><div class="hr"><span class="h">20시</span><span class="e">숙소</span><span class="c">18°</span><span class="w">북서 1.6m/s</span></div><div class="hr"><span class="h">21시</span><span class="e"></span><span class="c">17°</span><span class="w">북서 1.7m/s</span></div></div></div>
+    <p class="wx-tip">한강 피크닉 내내 맑고 비 소식이 없습니다. 한낮에는 21~22°C까지 올라 햇볕이 따갑고 자외선도 높으니 선크림과 모자를 챙겨 주세요. 볼링이 끝나고 숙소로 갈 무렵에는 17~18°C로 내려갑니다.</p>
+    <p class="wx-wear"><b>옷차림</b> 반팔이나 얇은 긴팔에 편한 바지·운동화, 저녁용 가디건 하나</p>
+    <p class="wx-src">시간별 기온은 9월 30일 14시 발표, 최저·최고는 11시 발표 기준이라 서로 1~2°C 차이가 날 수 있습니다. 출처: <a href="https://weather.naver.com/today/09710101" target="_blank" rel="noopener">네이버 날씨 잠실동</a></p>
+  </section>
+
+  <section class="rooms" id="rooms" aria-labelledby="rooms-title">
+    <div class="rooms-head">
+      <h2 id="rooms-title">방 배정</h2>
+      <div class="find"><label for="who">내 방 찾기</label><input id="who" type="search" placeholder="이름 입력" autocomplete="off"></div>
+    </div>
+    <p class="find-result" id="find-result" aria-live="polite">숙소 stay509 · 이름을 입력하면 방이 표시됩니다.</p>
+    <div class="rtypes">
+      <div class="rt"><h3><a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><span>7실 · 2인 1실</span></h3>
+        <ul><li>킹 매트리스 + 슈퍼싱글 침대</li><li>OTT 4종, 방음 중문, 온돌</li><li>기준 2인 (최대 3인)</li></ul></div>
+      <div class="rt best"><h3><a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><span>1실 · 1인</span></h3>
+        <ul><li>킹 매트리스 2개</li><li><b>85인치 TV</b>, <b>다다미룸</b>, OTT 4종, 방음 중문, 온돌</li><li>기준 2인 (최대 4인)</li></ul>
+        <p>디럭스보다 방이 넓고 침대가 크며, 큰 화면과 다다미 공간이 더 있습니다. 밤에 모여 영화 보기 좋은 방입니다.</p></div>
+    </div>
+    <p class="note">체크인 18:00 · 체크아웃 12:00 · 건물 전체 금연 · 입실 때 신분증(실물 또는 모바일) 확인</p>
+    <div class="groups">
+      <div class="group" data-group="A">
+        <h3>A 그룹</h3>
+        <div class="room-grid">
+          <div class="room"><span class="no"><b>1</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>기현</li><li>재현</li></ul></div>
+          <div class="room"><span class="no"><b>2</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>제훈</li><li>정민</li></ul></div>
+          <div class="room"><span class="no"><b>3</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>승현</li><li>환희</li></ul></div>
+          <div class="room"><span class="no"><b>4</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>용래</li><li>예훈</li></ul></div>
+        </div>
+      </div>
+      <div class="group" data-group="B">
+        <h3>B 그룹</h3>
+        <div class="room-grid">
+          <div class="room"><span class="no"><b>1</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>서윤</li><li>이나</li></ul></div>
+          <div class="room"><span class="no"><b>2</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>이슬</li><li>윤경</li></ul></div>
+          <div class="room"><span class="no"><b>3</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>혜령</li><li>애리</li></ul></div>
+          <div class="room best"><span class="no"><b>4</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><ul><li>지수</li></ul><span class="solo">1인 · 더 좋은 방</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="prep" aria-labelledby="prep">
+    <h2 id="prep">출발 전에 챙길 것</h2>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="c-menu"><span>배달 점심 메뉴 미리 알려 주기</span></label></li>
+      <li><label><input type="checkbox" id="c-coat"><span>얇은 겉옷 (밤에는 17~18°C)</span></label></li>
+      <li><label><input type="checkbox" id="c-sun"><span>선크림·모자 (낮 자외선 높음)</span></label></li>
+      <li><label><input type="checkbox" id="c-share"><span>팀 프로그램에서 나눌 업무 이야기</span></label></li>
+      <li><label><input type="checkbox" id="c-wear"><span>자전거·러닝 하실 분은 편한 옷과 신발</span></label></li>
+      <li><label><input type="checkbox" id="c-stay"><span>1박 세면도구·갈아입을 옷</span></label></li>
+    </ul>
+    <p class="note">체크 표시는 이 브라우저에만 남습니다.</p>
+  </section>
+
+  <footer>일정은 현장 사정에 따라 바뀔 수 있습니다. 원본 타임테이블: <a href="https://catchtable.atlassian.net/wiki/x/awepqg" target="_blank" rel="noopener">Confluence</a></footer>
+</div>
+
+<script>
+document.querySelectorAll('.checks input').forEach(function (el) {
+  try { el.checked = localStorage.getItem('ws-' + el.id) === '1'; } catch (e) {}
+  el.addEventListener('change', function () {
+    try { localStorage.setItem('ws-' + el.id, el.checked ? '1' : '0'); } catch (e) {}
+  });
+});
+(function () {
+  var input = document.getElementById('who'), out = document.getElementById('find-result');
+  var base = out.innerHTML;
+  input.addEventListener('input', function () {
+    var q = input.value.trim(), found = [];
+    document.querySelectorAll('.room').forEach(function (room) {
+      var hitRoom = false;
+      room.querySelectorAll('li').forEach(function (li) {
+        var hit = q && li.textContent.indexOf(q) !== -1;
+        li.classList.toggle('hit', !!hit);
+        if (hit) { hitRoom = true; found.push({ name: li.textContent, group: room.closest('.group').dataset.group, no: room.querySelector('.no b').textContent, type: room.querySelector('.rtype').textContent, mates: [].map.call(room.querySelectorAll('li'), function (x) { return x.textContent; }).filter(function (n) { return n !== li.textContent; }) }); }
+      });
+      room.classList.toggle('hit', hitRoom);
+    });
+    if (!q) { out.innerHTML = base; return; }
+    if (!found.length) { out.textContent = '"' + q + '" 이름을 찾지 못했습니다. 이름 두 글자로 입력해 보세요.'; return; }
+    out.innerHTML = found.map(function (f) {
+      return f.name + '님은 <strong>' + f.group + ' 그룹 ' + f.no + '번 방</strong> (' + f.type + ')' + (f.mates.length ? ' · 같은 방: ' + f.mates.join(', ') : ' · 혼자 씁니다');
+    }).join('<br>');
+  });
+})();
+(function () {
+  function kstNow() {
+    var parts = {};
+    new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+    return { date: parts.year + '-' + parts.month + '-' + parts.day, min: (+parts.hour) * 60 + (+parts.minute), hour: +parts.hour };
+  }
+  function toMin(t) { var a = t.split(':'); return (+a[0]) * 60 + (+a[1]); }
+  var pill = document.getElementById('now-pill'), pillText = document.getElementById('now-text');
+  function tick() {
+    var now = kstNow(), active = null;
+    document.querySelectorAll('.day[data-date]').forEach(function (day) {
+      var stops = [].slice.call(day.querySelectorAll('.stop'));
+      var today = day.dataset.date === now.date;
+      var before = day.dataset.date < now.date;
+      stops.forEach(function (st, i) {
+        var start = toMin(st.querySelector('time').textContent);
+        var end = i + 1 < stops.length ? toMin(stops[i + 1].querySelector('time').textContent) : toMin(day.dataset.end);
+        var isNow = today && now.min >= start && now.min < end;
+        st.classList.toggle('now', isNow);
+        st.classList.toggle('past', before || (today && now.min >= end));
+        if (isNow) { st.setAttribute('aria-current', 'time'); active = { el: st, day: day }; } else { st.removeAttribute('aria-current'); }
+      });
+    });
+    document.querySelectorAll('.hr').forEach(function (h) {
+      h.classList.toggle('now', now.date === '2026-10-01' && parseInt(h.querySelector('.h').textContent, 10) === now.hour);
+    });
+    if (active) {
+      pill.hidden = false;
+      pillText.textContent = '지금 · ' + active.el.querySelector('time').textContent + ' ' + active.el.querySelector('h3').firstChild.textContent.trim();
+    } else { pill.hidden = true; }
+  }
+  tick();
+  setInterval(tick, 30000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+})();
+</script>
+<script>(function(){function r(){try{parent.postMessage({__vh:1,h:Math.max(document.documentElement.scrollHeight,(document.body||{}).scrollHeight||0)},"*");}catch(e){}}addEventListener("load",r);addEventListener("resize",r);if(window.ResizeObserver){try{new ResizeObserver(r).observe(document.documentElement);}catch(e){}}setTimeout(r,200);setTimeout(r,800);})();</script><script id="__lbjs">(function(){function open(src){if(window.self!==window.top){try{parent.postMessage({__lb:src},"*");return;}catch(e){}}var o=document.createElement("div");o.style.cssText="position:fixed;inset:0;z-index:3000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.85);cursor:zoom-out";var im=document.createElement("img");im.src=src;im.style.cssText="max-width:94vw;max-height:94vh;border-radius:4px;box-shadow:0 8px 50px rgba(0,0,0,.6)";o.appendChild(im);o.addEventListener("click",function(){o.remove();});document.body.appendChild(o);var esc=function(e){if(e.key==="Escape"){o.remove();document.removeEventListener("keydown",esc);}};document.addEventListener("keydown",esc);}document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a");var img=e.target.closest&&e.target.closest("img");var raw=null;if(a){var h=a.getAttribute("href")||"";if(/\.(png|jpe?g|webp|gif|svg)(\?|#|$)/i.test(h))raw=h;}if(!raw&&img&&img.closest(".cmp-side"))raw=img.getAttribute("src");if(raw){e.preventDefault();open(new URL(raw,location.href).href);}});})();</script></body></html>
