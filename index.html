@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>캐테그로스 워크샵</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -243,11 +243,43 @@ h1 { position: relative; }
 @keyframes sun-spin { to { transform: rotate(360deg); } }
 @keyframes wave-flow { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(60px, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .hero-art .sun, .hero-art .rays, .hero-art .wave { animation: none; } }
+.rec { list-style: none; margin: 4px 0 0; padding: 8px 12px; border-radius: 10px; background: var(--river-soft); display: grid; gap: 2px; font-size: 13px; color: var(--fg); }
+.rec li { padding-left: 18px; position: relative; }
+.rec li::before { content: "✓"; position: absolute; left: 0; color: var(--river); font-weight: 700; }
+.room-grid.all { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 760px) { .room-grid.all { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.photos { display: grid; gap: 14px; }
+.photos-head { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; border-bottom: 2px solid var(--fg); padding-bottom: 8px; }
+.photos-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 30px; margin: 0; }
+.photos-head span { font-size: 13px; color: var(--muted); }
+.photos .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 13px; font-weight: 500; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.chip span { color: var(--muted); font-variant-numeric: tabular-nums; margin-left: 2px; }
+.chip.on { background: var(--river); border-color: var(--river); color: #fff; }
+.chip.on span { color: #fff; opacity: .8; }
+.chip:focus-visible { outline: 2px solid var(--river); outline-offset: 2px; }
+.ph-grid { columns: 4 200px; column-gap: 8px; }
+.ph { display: block; margin-bottom: 8px; break-inside: avoid; border-radius: 10px; overflow: hidden; background: var(--river-soft); }
+.ph img { display: block; width: 100%; height: auto; transition: transform .3s ease; }
+.ph:hover img { transform: scale3d(1.03, 1.03, 1); }
+.ph:focus-visible { outline: 3px solid var(--river); outline-offset: 2px; }
+@media (max-width: 420px) { .ph-grid { columns: 2; column-gap: 6px; } .ph { margin-bottom: 6px; } }
+.lb { position: fixed; inset: 0; z-index: 50; background: rgba(12, 22, 30, .92); display: grid; grid-template-columns: 56px minmax(0, 1fr) 56px; align-items: center; padding: env(safe-area-inset-top, 0px) 8px env(safe-area-inset-bottom, 0px); }
+.lb figure { grid-column: 2; grid-row: 1; margin: 0; display: grid; justify-items: center; gap: 10px; min-width: 0; }
+.lb img { max-width: 100%; max-height: 82vh; border-radius: 8px; object-fit: contain; }
+.lb figcaption { color: #e6eef3; font-size: 13px; font-variant-numeric: tabular-nums; }
+.lb button { font: inherit; background: rgba(255, 255, 255, .12); color: #fff; border: 0; border-radius: 999px; cursor: pointer; }
+.lb-nav.prev { grid-column: 1; grid-row: 1; }
+.lb-nav.next { grid-column: 3; grid-row: 1; }
+.lb-nav { width: 44px; height: 44px; font-size: 28px; line-height: 1; justify-self: center; }
+.lb-x { position: absolute; top: calc(env(safe-area-inset-top, 0px) + 12px); right: 12px; width: 40px; height: 40px; font-size: 18px; }
+.lb button:hover { background: rgba(255, 255, 255, .24); }
+@media (max-width: 560px) { .lb { grid-template-columns: 0 minmax(0, 1fr) 0; } .lb-nav { position: absolute; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); } .lb-nav.prev { left: 24px; } .lb-nav.next { right: 24px; } }
 </style>
 </head><body>
 
 <nav class="nav" aria-label="바로가기"><div>
-  <a href="#d1">1일차</a><a href="#d2">2일차</a><a href="#weather">날씨</a><a href="#rooms">방 배정</a><a href="#prep">준비물</a>
+  <a href="#d1">1일차</a><a href="#d2">2일차</a><a href="#photos">사진</a><a href="#weather">날씨</a><a href="#rooms">방 배정</a><a href="#prep">준비물</a>
 </div></nav>
 <div class="wrap">
   <header>
@@ -256,9 +288,9 @@ h1 { position: relative; }
       <g class="waves"><path class="wave w1" d="M-60 92c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8" fill="none" stroke="#1a86c8" stroke-width="4" stroke-linecap="round"/><path class="wave w2" d="M-110 108c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8c15 0 15-8 30-8s15 8 30 8" fill="none" stroke="#7cc4ec" stroke-width="4" stroke-linecap="round"/></g>
     </svg>
     <div class="eyebrow">캐테그로스 · 10월 1일(목) – 2일(금) · 1박 2일</div>
-    <h1>잠실 <span class="river">한강</span>에서 만나요</h1>
+    <h1>잠실 <span class="river">한강</span>에서 만났어요</h1>
     <p class="now-pill" id="now-pill" hidden><span class="pulse" aria-hidden="true"></span><span id="now-text"></span></p>
-    <p class="lede">한강 피크닉으로 시작해 아쿠아리움, 저녁, 볼링까지 이어지는 일정입니다. 1일차 11:30까지 잠실한강공원으로 각자 와 주세요.</p>
+    <p class="lede">한강 피크닉으로 시작해 아쿠아리움과 저녁, 브런치까지 함께한 1박 2일이었어요. 그날 채널에 남은 기록과 사진을 모아 두었습니다.</p>
   </header>
 
   <section class="keyfacts" aria-label="핵심 정보">
@@ -287,22 +319,25 @@ h1 { position: relative; }
             <li>피크닉 간식 픽업 (예: 픽베이크, 한정선)</li>
             <li>돗자리는 현장에서 렌트합니다 (따로 챙기지 않아도 됩니다)</li>
           </ul>
-          <div class="links"><a href="https://naver.me/58N6MBRS" target="_blank" rel="noopener">잠실한강공원 위치</a></div>
+          <div class="links"><a href="https://naver.me/58N6MBRS" target="_blank" rel="noopener">잠실한강공원 위치</a><a href="https://map.naver.com/p/search/%EC%9E%A0%EC%8B%A4%ED%95%9C%EA%B0%95%EA%B3%B5%EC%9B%90%20%EC%A0%95%EA%B5%AD%EC%88%B2" target="_blank" rel="noopener">정국숲 3호</a><a href="https://map.naver.com/p/search/%ED%95%9C%EC%A0%95%EC%84%A0%20%EC%9E%A0%EC%8B%A4" target="_blank" rel="noopener">한정선</a></div>
+          <ul class="rec"><li>모인 곳은 <b>정국숲 3호</b>. 한강사업본부 잠실안내센터(한가람로 65) 근처라 길을 헤맨 분이 많았어요</li><li>간식은 한정선에서 픽업. 테이블링 대기로 1분에 3~4팀씩 줄었고, 물티슈도 오는 길에 샀어요</li><li>돗자리는 주차장에서만 받을 수 있어 픽업 뒤 합류</li></ul>
         </div></li>
         <li class="stop meal"><time>12:00</time><div class="body"><h3>한강공원에서 점심 식사</h3></div></li>
         <li class="stop play"><time>13:00</time><div class="body">
           <h3>팀 프로그램 (업무 공유) · 피크닉</h3>
           <p>자전거, 러닝, 독서, 카페 등 자유롭게 골라서</p>
+          <ul class="rec"><li>13:50 커피 주문 취합: 아이스 아메리카노 5, 뜨거운 아메리카노 2, 아이스 페퍼민트 1</li></ul>
         </div></li>
         <li class="stop play"><time>14:00</time><div class="body"><h3>자유시간 <span class="tag free">자유</span></h3></div></li>
         <li class="stop key"><time>15:00</time><div class="body">
           <h3>택시로 롯데월드타워 이동</h3>
           <p>15:30 도착 예정</p>
         </div></li>
-        <li class="stop play"><time>16:00</time><div class="body"><h3>아쿠아리움 관람</h3></div></li>
+        <li class="stop play"><time>16:00</time><div class="body"><h3>아쿠아리움 관람</h3><div class="links"><a href="https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%EC%9B%94%EB%93%9C%20%EC%95%84%EC%BF%A0%EC%95%84%EB%A6%AC%EC%9B%80" target="_blank" rel="noopener">롯데월드 아쿠아리움 위치</a></div><ul class="rec"><li>15:30 지하 1층 입구로 들어가 표 사용</li><li>마지막 구역은 2층 펭귄. 1층에서 단체 사진</li><li>서윤님의 펭귄과 소통하는 능력이 확인되었어요 🐧</li></ul></div></li>
         <li class="stop key"><time>17:20</time><div class="body"><h3>저녁 식사 장소로 이동</h3></div></li>
         <li class="stop meal"><time>18:00</time><div class="body">
           <h3>마키노차야 블랙31에서 저녁 식사</h3>
+          <p>해산물·회 전문 뷔페</p>
           <div class="links"><a href="https://naver.me/5BcjxE1B" target="_blank" rel="noopener">마키노차야 블랙31 위치</a></div>
         </div></li>
         <li class="stop play"><time>19:00</time><div class="body">
@@ -318,7 +353,7 @@ h1 { position: relative; }
             <a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a>
           </div>
         </div></li>
-        <li class="stop"><time>21:00</time><div class="body"><h3>휴식</h3></div></li>
+        <li class="stop"><time>21:00</time><div class="body"><h3>휴식</h3><ul class="rec"><li>19:46 저녁 뒤 일정 투표: 숙소 8표, 더 놀다 들어가기 8표</li><li>일부는 보드게임방으로, 일부는 방에서 「더 커뮤니티 2」 시청</li></ul></div></li>
       </ol>
     </section>
 
@@ -326,11 +361,24 @@ h1 { position: relative; }
       <div class="day-head"><h2 id="d2">2일차</h2><span class="date">10/2 금</span><span>숙소 → 해산</span></div>
       <ol class="timeline">
         <li class="stop"><time>10:00</time><div class="body"><h3>기상</h3></div></li>
-        <li class="stop meal"><time>11:00</time><div class="body"><h3>브런치 식사</h3><p>숙소 체크아웃은 12:00까지</p></div></li>
-        <li class="stop meal"><time>12:00</time><div class="body"><h3>카페</h3></div></li>
-        <li class="stop key"><time>13:00</time><div class="body"><h3>워크샵 회고 후 마무리</h3></div></li>
+        <li class="stop meal"><time>11:00</time><div class="body"><h3>MIP에서 브런치</h3><p>숙소 체크아웃은 12:00까지</p><div class="links"><a href="https://app.catchtable.co.kr/ct/shop/MIP?from=share&amp;type=DINING" target="_blank" rel="noopener">MIP (캐치테이블)</a></div><ul class="rec"><li>먹을 사람 11명, 더 잘 사람 4명</li><li>식사 인원은 11시까지 숙소 앞, 쉬는 인원은 12시까지 체크아웃 뒤 합류</li><li>다 나온 방은 방 키 반납</li></ul></div></li>
+        <li class="stop meal"><time>12:00</time><div class="body"><h3>카페</h3><ul class="rec"><li>3층에 자리를 맡고, 2명은 포장</li></ul></div></li>
+        <li class="stop key"><time>13:00</time><div class="body"><h3>워크샵 회고 후 마무리</h3><ul class="rec"><li>13시 이후 자유 해산. 모두 고생 많으셨습니다!</li></ul></div></li>
       </ol>
     </section>
+  </div>
+
+  <section class="photos" id="photos" aria-labelledby="ph-title">
+    <div class="photos-head"><h2 id="ph-title">사진</h2><span>채널 「워크샵 사진 자랑」 스레드와 당일 대화에 올라온 사진 116장</span></div>
+    <div class="chips" role="group" aria-label="올린 사람으로 거르기"><button type="button" class="chip on" data-who="">전체 <span>116</span></button><button type="button" class="chip" data-who="김용래">김용래 <span>30</span></button><button type="button" class="chip" data-who="황윤정">황윤정 <span>26</span></button><button type="button" class="chip" data-who="이나">이나 <span>17</span></button><button type="button" class="chip" data-who="박제훈">박제훈 <span>15</span></button><button type="button" class="chip" data-who="우정민">우정민 <span>9</span></button><button type="button" class="chip" data-who="이애리">이애리 <span>7</span></button><button type="button" class="chip" data-who="이지수">이지수 <span>6</span></button><button type="button" class="chip" data-who="조기현">조기현 <span>5</span></button><button type="button" class="chip" data-who="전예훈">전예훈 <span>1</span></button></div>
+    <div class="ph-grid" id="ph-grid"><a class="ph" href="workshop-photos/F0C675BLSGJ.jpg" data-who="김용래" data-i="0"><img src="workshop-photos/F0C675BLSGJ-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RU6AQP9.jpg" data-who="김용래" data-i="1"><img src="workshop-photos/F0C5RU6AQP9-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0FSUBW.jpg" data-who="김용래" data-i="2"><img src="workshop-photos/F0C6B0FSUBW-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71LP16QG.jpg" data-who="김용래" data-i="3"><img src="workshop-photos/F0C71LP16QG-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C65B45CVC.jpg" data-who="김용래" data-i="4"><img src="workshop-photos/F0C65B45CVC-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0FHMSQ.jpg" data-who="김용래" data-i="5"><img src="workshop-photos/F0C6B0FHMSQ-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0F3BFE.jpg" data-who="김용래" data-i="6"><img src="workshop-photos/F0C6B0F3BFE-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C65B4DTP0.jpg" data-who="김용래" data-i="7"><img src="workshop-photos/F0C65B4DTP0-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0G2M1S.jpg" data-who="김용래" data-i="8"><img src="workshop-photos/F0C6B0G2M1S-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RU6N223.jpg" data-who="김용래" data-i="9"><img src="workshop-photos/F0C5RU6N223-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0WUPS8.jpg" data-who="김용래" data-i="10"><img src="workshop-photos/F0C6B0WUPS8-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RUN7UDD.jpg" data-who="김용래" data-i="11"><img src="workshop-photos/F0C5RUN7UDD-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71M486QG.jpg" data-who="김용래" data-i="12"><img src="workshop-photos/F0C71M486QG-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C613RKETD.jpg" data-who="김용래" data-i="13"><img src="workshop-photos/F0C613RKETD-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C675TMHK4.jpg" data-who="김용래" data-i="14"><img src="workshop-photos/F0C675TMHK4-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0WTXFE.jpg" data-who="김용래" data-i="15"><img src="workshop-photos/F0C6B0WTXFE-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C613R9MQT.jpg" data-who="김용래" data-i="16"><img src="workshop-photos/F0C613R9MQT-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RUN1M71.jpg" data-who="김용래" data-i="17"><img src="workshop-photos/F0C5RUN1M71-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C613RCM99.jpg" data-who="김용래" data-i="18"><img src="workshop-photos/F0C613RCM99-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B0XD27N.jpg" data-who="김용래" data-i="19"><img src="workshop-photos/F0C6B0XD27N-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C675ZVCFL.jpg" data-who="김용래" data-i="20"><img src="workshop-photos/F0C675ZVCFL-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C698R6TCZ.jpg" data-who="김용래" data-i="21"><img src="workshop-photos/F0C698R6TCZ-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C675ZUZLJ.jpg" data-who="김용래" data-i="22"><img src="workshop-photos/F0C675ZUZLJ-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C675ZTR4J.jpg" data-who="김용래" data-i="23"><img src="workshop-photos/F0C675ZTR4J-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C65BSJ2QN.jpg" data-who="김용래" data-i="24"><img src="workshop-photos/F0C65BSJ2QN-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C698RLRDF.jpg" data-who="김용래" data-i="25"><img src="workshop-photos/F0C698RLRDF-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RUTRCG7.jpg" data-who="김용래" data-i="26"><img src="workshop-photos/F0C5RUTRCG7-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71MB9L80.jpg" data-who="김용래" data-i="27"><img src="workshop-photos/F0C71MB9L80-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C698RTZSM.jpg" data-who="김용래" data-i="28"><img src="workshop-photos/F0C698RTZSM-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C698S07LZ.jpg" data-who="김용래" data-i="29"><img src="workshop-photos/F0C698S07LZ-s.jpg" alt="김용래님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60GMNALB.jpg" data-who="황윤정" data-i="30"><img src="workshop-photos/F0C60GMNALB-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C64QJQ1SA.jpg" data-who="황윤정" data-i="31"><img src="workshop-photos/F0C64QJQ1SA-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6ADWBL5A.jpg" data-who="황윤정" data-i="32"><img src="workshop-photos/F0C6ADWBL5A-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C64QM31U6.jpg" data-who="황윤정" data-i="33"><img src="workshop-photos/F0C64QM31U6-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60GTDUBD.jpg" data-who="황윤정" data-i="34"><img src="workshop-photos/F0C60GTDUBD-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C61H9PWSH.jpg" data-who="황윤정" data-i="35"><img src="workshop-photos/F0C61H9PWSH-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60KPP0AF.jpg" data-who="황윤정" data-i="36"><img src="workshop-photos/F0C60KPP0AF-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C656CATAA.jpg" data-who="황윤정" data-i="37"><img src="workshop-photos/F0C656CATAA-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6AR4CQJY.jpg" data-who="황윤정" data-i="38"><img src="workshop-photos/F0C6AR4CQJY-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C656F0P6J.jpg" data-who="황윤정" data-i="39"><img src="workshop-photos/F0C656F0P6J-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C61RL37N1.jpg" data-who="황윤정" data-i="40"><img src="workshop-photos/F0C61RL37N1-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C670NNKLJ.jpg" data-who="황윤정" data-i="41"><img src="workshop-photos/F0C670NNKLJ-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RPGLHF1.jpg" data-who="황윤정" data-i="42"><img src="workshop-photos/F0C5RPGLHF1-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6AR5J1NG.jpg" data-who="황윤정" data-i="43"><img src="workshop-photos/F0C6AR5J1NG-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60U04JDR.jpg" data-who="황윤정" data-i="44"><img src="workshop-photos/F0C60U04JDR-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C670NMTLJ.jpg" data-who="황윤정" data-i="45"><img src="workshop-photos/F0C670NMTLJ-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C61RMJQQM.jpg" data-who="황윤정" data-i="46"><img src="workshop-photos/F0C61RMJQQM-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C670NHZ3L.jpg" data-who="황윤정" data-i="47"><img src="workshop-photos/F0C670NHZ3L-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B1HTVTN.jpg" data-who="황윤정" data-i="48"><img src="workshop-photos/F0C6B1HTVTN-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71MTAHJL.jpg" data-who="황윤정" data-i="49"><img src="workshop-photos/F0C71MTAHJL-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C65CAB7C6.jpg" data-who="황윤정" data-i="50"><img src="workshop-photos/F0C65CAB7C6-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C676KMC58.jpg" data-who="황윤정" data-i="51"><img src="workshop-photos/F0C676KMC58-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B1QHWQL.jpg" data-who="황윤정" data-i="52"><img src="workshop-photos/F0C6B1QHWQL-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C699EP1L1.jpg" data-who="황윤정" data-i="53"><img src="workshop-photos/F0C699EP1L1-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71N20K7S.jpg" data-who="황윤정" data-i="54"><img src="workshop-photos/F0C71N20K7S-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C625EAT7X.jpg" data-who="황윤정" data-i="55"><img src="workshop-photos/F0C625EAT7X-s.jpg" alt="황윤정님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5XLSBVH7.jpg" data-who="이나" data-i="56"><img src="workshop-photos/F0C5XLSBVH7-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6Q3ZKEN4.jpg" data-who="이나" data-i="57"><img src="workshop-photos/F0C6Q3ZKEN4-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5PG45FMZ.jpg" data-who="이나" data-i="58"><img src="workshop-photos/F0C5PG45FMZ-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5XLZN86M.jpg" data-who="이나" data-i="59"><img src="workshop-photos/F0C5XLZN86M-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5VMB41JN.jpg" data-who="이나" data-i="60"><img src="workshop-photos/F0C5VMB41JN-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5TT6GMF0.jpg" data-who="이나" data-i="61"><img src="workshop-photos/F0C5TT6GMF0-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5W5CTX6W.jpg" data-who="이나" data-i="62"><img src="workshop-photos/F0C5W5CTX6W-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5Y86MUGZ.jpg" data-who="이나" data-i="63"><img src="workshop-photos/F0C5Y86MUGZ-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C64QDPRBQ.jpg" data-who="이나" data-i="64"><img src="workshop-photos/F0C64QDPRBQ-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C66JN3UP4.jpg" data-who="이나" data-i="65"><img src="workshop-photos/F0C66JN3UP4-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68MEAF97.jpg" data-who="이나" data-i="66"><img src="workshop-photos/F0C68MEAF97-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RC445L7.jpg" data-who="이나" data-i="67"><img src="workshop-photos/F0C5RC445L7-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6ADTV9S8.jpg" data-who="이나" data-i="68"><img src="workshop-photos/F0C6ADTV9S8-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RC5AK3R.jpg" data-who="이나" data-i="69"><img src="workshop-photos/F0C5RC5AK3R-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C714P77NC.jpg" data-who="이나" data-i="70"><img src="workshop-photos/F0C714P77NC-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C714PTV7A.jpg" data-who="이나" data-i="71"><img src="workshop-photos/F0C714PTV7A-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6ADX96EQ.jpg" data-who="이나" data-i="72"><img src="workshop-photos/F0C6ADX96EQ-s.jpg" alt="이나님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60FV6C3D.jpg" data-who="박제훈" data-i="73"><img src="workshop-photos/F0C60FV6C3D-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C66HZ9R42.jpg" data-who="박제훈" data-i="74"><img src="workshop-photos/F0C66HZ9R42-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C61DJPY93.jpg" data-who="박제훈" data-i="75"><img src="workshop-photos/F0C61DJPY93-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68LSAS1X.jpg" data-who="박제훈" data-i="76"><img src="workshop-photos/F0C68LSAS1X-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60FYMPTM.jpg" data-who="박제훈" data-i="77"><img src="workshop-photos/F0C60FYMPTM-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68LTS1BK.jpg" data-who="박제훈" data-i="78"><img src="workshop-photos/F0C68LTS1BK-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60G1M08K.jpg" data-who="박제훈" data-i="79"><img src="workshop-photos/F0C60G1M08K-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C7141L508.jpg" data-who="박제훈" data-i="80"><img src="workshop-photos/F0C7141L508-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C60G42F7V.jpg" data-who="박제훈" data-i="81"><img src="workshop-photos/F0C60G42F7V-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C64Q29V70.jpg" data-who="박제훈" data-i="82"><img src="workshop-photos/F0C64Q29V70-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RBR3BAT.jpg" data-who="박제훈" data-i="83"><img src="workshop-photos/F0C5RBR3BAT-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6ADF64TE.jpg" data-who="박제훈" data-i="84"><img src="workshop-photos/F0C6ADF64TE-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68M3NBED.jpg" data-who="박제훈" data-i="85"><img src="workshop-photos/F0C68M3NBED-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6ADHFPTN.jpg" data-who="박제훈" data-i="86"><img src="workshop-photos/F0C6ADHFPTN-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C714BPNPJ.jpg" data-who="박제훈" data-i="87"><img src="workshop-photos/F0C714BPNPJ-s.jpg" alt="박제훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6PE9FQKA.jpg" data-who="우정민" data-i="88"><img src="workshop-photos/F0C6PE9FQKA-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RCH9SMV.jpg" data-who="우정민" data-i="89"><img src="workshop-photos/F0C5RCH9SMV-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5RCKEGBZ.jpg" data-who="우정민" data-i="90"><img src="workshop-photos/F0C5RCKEGBZ-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C618L4D3M.jpg" data-who="우정민" data-i="91"><img src="workshop-photos/F0C618L4D3M-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5S45RL2K.jpg" data-who="우정민" data-i="92"><img src="workshop-photos/F0C5S45RL2K-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6B5XR1LL.jpg" data-who="우정민" data-i="93"><img src="workshop-photos/F0C6B5XR1LL-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C69E03249.jpg" data-who="우정민" data-i="94"><img src="workshop-photos/F0C69E03249-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5S4PT7FZ.jpg" data-who="우정민" data-i="95"><img src="workshop-photos/F0C5S4PT7FZ-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C71SPQSSU.jpg" data-who="우정민" data-i="96"><img src="workshop-photos/F0C71SPQSSU-s.jpg" alt="우정민님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C70RJQXQQ.jpg" data-who="이애리" data-i="97"><img src="workshop-photos/F0C70RJQXQQ-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6086K6RH.jpg" data-who="이애리" data-i="98"><img src="workshop-photos/F0C6086K6RH-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6A5CQN84.jpg" data-who="이애리" data-i="99"><img src="workshop-photos/F0C6A5CQN84-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68D1HUSD.jpg" data-who="이애리" data-i="100"><img src="workshop-photos/F0C68D1HUSD-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C68D29AGH.jpg" data-who="이애리" data-i="101"><img src="workshop-photos/F0C68D29AGH-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6088CY83.jpg" data-who="이애리" data-i="102"><img src="workshop-photos/F0C6088CY83-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C70RT4JC8.jpg" data-who="이애리" data-i="103"><img src="workshop-photos/F0C70RT4JC8-s.jpg" alt="이애리님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5EAYPUHM.jpg" data-who="이지수" data-i="104"><img src="workshop-photos/F0C5EAYPUHM-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6Q39548G.jpg" data-who="이지수" data-i="105"><img src="workshop-photos/F0C6Q39548G-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5TPA6EA2.jpg" data-who="이지수" data-i="106"><img src="workshop-photos/F0C5TPA6EA2-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5VHH24PL.jpg" data-who="이지수" data-i="107"><img src="workshop-photos/F0C5VHH24PL-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5ZCUKHEY.jpg" data-who="이지수" data-i="108"><img src="workshop-photos/F0C5ZCUKHEY-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5QQ3FA7M.jpg" data-who="이지수" data-i="109"><img src="workshop-photos/F0C5QQ3FA7M-s.jpg" alt="이지수님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C66AF5CN6.jpg" data-who="조기현" data-i="110"><img src="workshop-photos/F0C66AF5CN6-s.jpg" alt="조기현님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6A5KNZD2.jpg" data-who="조기현" data-i="111"><img src="workshop-photos/F0C6A5KNZD2-s.jpg" alt="조기현님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C6A5LNMRS.jpg" data-who="조기현" data-i="112"><img src="workshop-photos/F0C6A5LNMRS-s.jpg" alt="조기현님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C64GAFZ9U.jpg" data-who="조기현" data-i="113"><img src="workshop-photos/F0C64GAFZ9U-s.jpg" alt="조기현님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C61650RPX.jpg" data-who="조기현" data-i="114"><img src="workshop-photos/F0C61650RPX-s.jpg" alt="조기현님이 올린 워크샵 사진" loading="lazy" decoding="async"></a><a class="ph" href="workshop-photos/F0C5YSYC4JG.jpg" data-who="전예훈" data-i="115"><img src="workshop-photos/F0C5YSYC4JG-s.jpg" alt="전예훈님이 올린 워크샵 사진" loading="lazy" decoding="async"></a></div>
+  </section>
+
+  <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="사진 크게 보기">
+    <button type="button" class="lb-x" id="lb-x" aria-label="닫기">✕</button>
+    <button type="button" class="lb-nav prev" id="lb-prev" aria-label="이전 사진">‹</button>
+    <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+    <button type="button" class="lb-nav next" id="lb-next" aria-label="다음 사진">›</button>
   </div>
 
   <section class="weather" id="weather" aria-labelledby="wx-title">
@@ -354,30 +402,20 @@ h1 { position: relative; }
     <div class="rtypes">
       <div class="rt"><h3><a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><span>7실</span></h3>
         <ul><li>킹 매트리스 + 슈퍼싱글 침대</li><li>OTT 4종, 방음 중문, 온돌</li><li>기준 2인 (최대 3인)</li></ul></div>
-      <div class="rt best"><h3><a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><span>1실 · A 그룹 1번 방</span></h3>
+      <div class="rt best"><h3><a href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><span>1실 · 401호</span></h3>
         <ul><li>킹 매트리스 2개</li><li><b>85인치 TV</b>, <b>다다미룸</b>, OTT 4종, 방음 중문, 온돌</li><li>기준 2인 (최대 4인)</li></ul>
         <p>디럭스보다 방이 넓고 침대가 크며, 큰 화면과 다다미 공간이 더 있습니다. 밤에 모여 영화 보기 좋은 방입니다.</p></div>
     </div>
     <p class="note">체크인 18:00 · 체크아웃 12:00 · 건물 전체 금연 · 입실 때 신분증(실물 또는 모바일) 확인</p>
-    <div class="groups">
-      <div class="group" data-group="A">
-        <h3>A 그룹</h3>
-        <div class="room-grid">
-          <div class="room best"><span class="no"><b>1</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><ul><li>기현</li><li>재현</li></ul><span class="solo">더 좋은 방</span></div>
-          <div class="room"><span class="no"><b>2</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>제훈</li><li>정민</li></ul></div>
-          <div class="room"><span class="no"><b>3</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>승현</li><li>환희</li></ul></div>
-          <div class="room"><span class="no"><b>4</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>용래</li><li>예훈</li></ul></div>
-        </div>
-      </div>
-      <div class="group" data-group="B">
-        <h3>B 그룹</h3>
-        <div class="room-grid">
-          <div class="room"><span class="no"><b>1</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>서윤</li><li>이나</li></ul></div>
-          <div class="room"><span class="no"><b>2</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>이슬</li><li>윤정</li></ul></div>
-          <div class="room"><span class="no"><b>3</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>혜령</li><li>애리</li></ul></div>
-          <div class="room"><span class="no"><b>4</b>번 방</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>지수</li></ul><span class="solo">1인</span></div>
-        </div>
-      </div>
+    <div class="room-grid all">
+          <div class="room" data-floor="2"><span class="no"><b>205</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>이슬</li><li>서윤</li></ul></div>
+          <div class="room" data-floor="2"><span class="no"><b>207</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>정민</li><li>제훈</li></ul></div>
+          <div class="room" data-floor="3"><span class="no"><b>305</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>혜령</li><li>애리</li></ul></div>
+          <div class="room best" data-floor="4"><span class="no"><b>401</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/cinema" target="_blank" rel="noopener">👑 더블킹 씨네마</a><ul><li>기현</li><li>재현</li></ul><span class="solo">더 좋은 방</span></div>
+          <div class="room" data-floor="4"><span class="no"><b>402</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>윤정</li><li>이나</li></ul></div>
+          <div class="room" data-floor="4"><span class="no"><b>405</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>지수</li></ul><span class="solo">1인</span></div>
+          <div class="room" data-floor="4"><span class="no"><b>407</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>승현</li><li>환희</li></ul></div>
+          <div class="room" data-floor="5"><span class="no"><b>507</b>호</span><a class="rtype" href="http://www.stay509.com/view/viewLink.do?page=homepage/KOR/accommodation/deluxe" target="_blank" rel="noopener">디럭스</a><ul><li>용래</li><li>예훈</li></ul></div>
     </div>
   </section>
 
@@ -414,14 +452,14 @@ document.querySelectorAll('.checks input').forEach(function (el) {
       room.querySelectorAll('li').forEach(function (li) {
         var hit = q && li.textContent.indexOf(q) !== -1;
         li.classList.toggle('hit', !!hit);
-        if (hit) { hitRoom = true; found.push({ name: li.textContent, group: room.closest('.group').dataset.group, no: room.querySelector('.no b').textContent, type: room.querySelector('.rtype').textContent, mates: [].map.call(room.querySelectorAll('li'), function (x) { return x.textContent; }).filter(function (n) { return n !== li.textContent; }) }); }
+        if (hit) { hitRoom = true; found.push({ name: li.textContent, no: room.querySelector('.no b').textContent, type: room.querySelector('.rtype').textContent, mates: [].map.call(room.querySelectorAll('li'), function (x) { return x.textContent; }).filter(function (n) { return n !== li.textContent; }) }); }
       });
       room.classList.toggle('hit', hitRoom);
     });
     if (!q) { out.innerHTML = base; return; }
     if (!found.length) { out.textContent = '"' + q + '" 이름을 찾지 못했습니다. 이름 두 글자로 입력해 보세요.'; return; }
     out.innerHTML = found.map(function (f) {
-      return f.name + '님은 <strong>' + f.group + ' 그룹 ' + f.no + '번 방</strong> (' + f.type + ')' + (f.mates.length ? ' · 같은 방: ' + f.mates.join(', ') : ' · 혼자 씁니다');
+      return f.name + '님은 <strong>' + f.no + '호</strong> (' + f.type + ')' + (f.mates.length ? ' · 같은 방: ' + f.mates.join(', ') : ' · 혼자 씁니다');
     }).join('<br>');
   });
 })();
@@ -439,7 +477,8 @@ document.querySelectorAll('.checks input').forEach(function (el) {
     document.querySelectorAll('.day[data-date]').forEach(function (day) {
       var stops = [].slice.call(day.querySelectorAll('.stop'));
       var today = day.dataset.date === now.date;
-      var before = day.dataset.date < now.date;
+      var during = now.date >= '2026-10-01' && now.date <= '2026-10-02';
+      var before = during && day.dataset.date < now.date;
       stops.forEach(function (st, i) {
         var start = toMin(st.querySelector('time').textContent);
         var end = i + 1 < stops.length ? toMin(stops[i + 1].querySelector('time').textContent) : toMin(day.dataset.end);
@@ -460,6 +499,60 @@ document.querySelectorAll('.checks input').forEach(function (el) {
   tick();
   setInterval(tick, 30000);
   document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+})();
+(function () {
+  var grid = document.getElementById('ph-grid'), lb = document.getElementById('lb'), img = document.getElementById('lb-img'), cap = document.getElementById('lb-cap');
+  var all = [].slice.call(grid.querySelectorAll('.ph')), shown = all, cur = 0;
+  document.querySelectorAll('.chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      document.querySelectorAll('.chip').forEach(function (x) { x.classList.toggle('on', x === c); });
+      var w = c.dataset.who;
+      all.forEach(function (a) { a.hidden = !!w && a.dataset.who !== w; });
+      shown = all.filter(function (a) { return !a.hidden; });
+    });
+  });
+  function show(i) {
+    cur = (i + shown.length) % shown.length;
+    var a = shown[cur];
+    img.src = a.getAttribute('href');
+    img.alt = a.querySelector('img').alt;
+    cap.textContent = a.dataset.who + ' · ' + (cur + 1) + ' / ' + shown.length;
+  }
+  function open(i) { show(i); lb.hidden = false; document.body.style.overflow = 'hidden'; document.getElementById('lb-x').focus(); }
+  function close() { lb.hidden = true; document.body.style.overflow = ''; if (shown[cur]) shown[cur].focus(); }
+  grid.addEventListener('click', function (e) {
+    var a = e.target.closest('.ph'); if (!a) return;
+    e.preventDefault(); open(shown.indexOf(a));
+  });
+  document.getElementById('lb-x').addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', function () { show(cur - 1); });
+  document.getElementById('lb-next').addEventListener('click', function () { show(cur + 1); });
+  lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(cur - 1);
+    else if (e.key === 'ArrowRight') show(cur + 1);
+  });
+  var x0 = null;
+  lb.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) show(cur + (dx < 0 ? 1 : -1));
+  });
+})();
+(function () {
+  var first = document.querySelector('#ph-grid img');
+  if (!first) return;
+  var probe = new Image();
+  probe.onerror = function () {
+    var sec = document.getElementById('photos');
+    if (sec) sec.hidden = true;
+    var link = document.querySelector('.nav a[href="#photos"]');
+    if (link) link.hidden = true;
+  };
+  probe.src = first.getAttribute('src');
 })();
 </script>
 </body></html>
